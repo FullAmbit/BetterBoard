@@ -86,6 +86,7 @@ function betterboard_install($db,$drop=false,$firstInstall=false,$lang='en_us'){
 		'content'           => 'Wow! Your first reply!',
 		'weight'            => 1,
 	)) or var_dump($statement->errorInfo());
+	return TRUE;
 }
 function betterboard_uninstall($db,$lang='en_us'){
 	$db->dropTable('betterboard_forums');
