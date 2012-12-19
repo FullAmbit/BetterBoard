@@ -56,6 +56,36 @@ function betterboard_install($db,$drop=false,$firstInstall=false,$lang='en_us'){
 	foreach($structures as $table=>$structure){
 		$db->createTable($table,$structure);
 	}
+	$statement=$db->prepare('newCategory','admin_betterboard');
+	$statement->execute(array(
+		'name'              => 'My Category',
+		'shortName'         => 'my-category',
+		'sortOrder'         => 1,
+	)) or var_dump($statement->errorInfo());
+	$statement=$db->prepare('newForum','admin_betterboard');
+	$statement->execute(array(
+		'name'              => 'My Forum',
+		'parentCategory'    => $db->lastInsertId(),
+		'parentForum'       => 0,
+		'shortName'         => 'my-forum',
+		'sortOrder'         => 1,
+	)) or var_dump($statement->errorInfo());
+	$statement=$db->prepare('newTopic','betterboard');
+	$statement->execute(array(
+		'owner'             => 1,
+		'parentForum'       => $db->lastInsertId(),
+		'name'              => 'My Topic',
+		'shortName'         => 'my-topic',
+		'content'           => 'Welcome to BetterBoard, a better board!',
+		'sortOrder'         => 1,
+	)) or var_dump($statement->errorInfo());
+	$statement=$db->prepare('newPost','betterboard');
+	$statement->execute(array(
+		'owner'             => 1,
+		'parentTopic'       => $db->lastInsertId(),
+		'content'           => 'Wow! Your first reply!',
+		'weight'            => 1,
+	)) or var_dump($statement->errorInfo());
 }
 function betterboard_uninstall($db,$lang='en_us'){
 	$db->dropTable('betterboard_forums');
