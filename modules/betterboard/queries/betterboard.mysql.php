@@ -1,6 +1,7 @@
 <?php
 function betterboard_addQueries() {
 	return array(
+		// SELECT
 		'getCategoryByShortName' => '
 			SELECT * FROM !prefix!betterboard_categories
 			WHERE shortName = :shortName
@@ -33,6 +34,17 @@ function betterboard_addQueries() {
 			SELECT * FROM !prefix!betterboard_posts
 			WHERE parentTopic = :parentTopic
 			ORDER BY `added` ASC
+		',
+		// INSERT
+		'newTopic' => '
+			INSERT INTO !prefix!betterboard_topics
+			       ( owner, parentForum, name, shortName, content, sortOrder)
+			VALUES (:owner,:parentForum,:name,:shortName,:content,:sortOrder)
+		',
+		'newPost' => '
+			INSERT INTO !prefix!betterboard_posts
+			       ( owner, parentTopic, content, weight)
+			VALUES (:owner,:parentTopic,:content,:weight)
 		',
 	);
 }
